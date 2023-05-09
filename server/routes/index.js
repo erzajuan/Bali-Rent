@@ -8,8 +8,10 @@ route.get("/api", (req, res) => {
 
 const userRoute = require("./user_route");
 const employeeRoute = require("./employee_route");
+const orderRoute = require("./order_route");
 
 route.use("/api/users", userRoute);
 route.use("/api/employes", employeeRoute);
+route.use("/api/orders", orderRoute);
 
 module.exports = route;

@@ -24,7 +24,7 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      rentId: {
+      rentHouseId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

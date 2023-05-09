@@ -7,6 +7,4 @@ employeeRoute.post("/login", employeeController.login);
 employeeRoute.get("/detail/:id", employeeController.detail);
 employeeRoute.put("/:id", employeeController.update);
 
-
-
 module.exports = employeeRoute;

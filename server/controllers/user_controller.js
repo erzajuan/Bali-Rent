@@ -1,11 +1,11 @@
 const { user, order } = require("../models");
-const { generateToken, verifToken } = require("../services/auth");
+const { generateTokenUser, verifToken } = require("../services/auth");
 const { decrypt } = require("../services/bcrypt");
 
 class UserControlelr {
   static async getUsers(req, res) {
     try {
-      let result = await user.findAll();
+      let result = await user.findAll({ include: [order] });
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json(error);
@@ -50,22 +50,23 @@ class UserControlelr {
 
       if (resultUsername) {
         if (decrypt(password, resultUsername.password)) {
-          let access_token = generateToken(resultUsername);
+          let access_token = generateTokenUser(resultUsername);
           let value = verifToken(access_token);
-          res.status(200).json({ access_token, value });
+
+          res.status(200).json({ access_token });
         } else {
           res.status(403).json({ message: "Password Salah" });
         }
       } else if (resultEmail) {
         if (decrypt(password, resultEmail.password)) {
-          let access_token = generateToken(resultEmail);
+          let access_token = generateTokenUser(resultEmail);
           res.status(200).json({ access_token });
         } else {
           res.status(403).json({ message: "Password Salah" });
         }
       } else if (resultPhone) {
         if (decrypt(password, resultPhone.password)) {
-          let access_token = generateToken(resultPhone);
+          let access_token = generateTokenUser(resultPhone);
           res.status(200).json({ access_token });
         } else {
           res.status(403).json({ message: "Password Salah" });

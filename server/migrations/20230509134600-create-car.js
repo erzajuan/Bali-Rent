@@ -42,7 +42,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING
       },
-      rendId: {
+      rentHouseId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

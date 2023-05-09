@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      car.hasOne(models.order);
     }
   }
   car.init({
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     wdType: DataTypes.STRING,
     carImage: DataTypes.STRING,
     status: DataTypes.STRING,
-    rendId: DataTypes.INTEGER
+    rentHouseId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'car',
