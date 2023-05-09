@@ -1,0 +1,72 @@
+const { encrypt } = require("../services/bcrypt");
+("use strict");
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class employee extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      employee.hasOne(models.rentHouse)
+    }
+  }
+  employee.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            message: "Name Tidak Boleh Kosong",
+          },
+        },
+      },
+      username: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            message: "Username Tidak Boleh Kosong",
+          },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            message: "E-mail Tidak Boleh Kosong",
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            message: "Password Tidak Boleh Kosong",
+          },
+        },
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            message: "Phone Number Tidak Boleh Kosong",
+          },
+        },
+      },
+      role: DataTypes.STRING ,
+    },
+    {
+      hooks: {
+        beforeCreate: function (employee, options) {
+          employee.password = encrypt(employee.password);
+          employee.role = "renter"
+        },
+      },
+      sequelize,
+      modelName: "employee",
+    }
+  );
+  return employee;
+};
