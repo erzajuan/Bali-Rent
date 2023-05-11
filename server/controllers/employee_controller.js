@@ -51,8 +51,7 @@ class EmployeeController {
       if (resultUsername) {
         if (decrypt(password, resultUsername.password)) {
           let access_token = generateTokenEmployee(resultUsername);
-          let value = verifToken(access_token);
-          res.status(200).json({ access_token, value });
+          res.status(200).json({ access_token });
         } else {
           res.status(403).json({ message: "Password Salah" });
         }
