@@ -28,23 +28,23 @@ let uploadUser = (req, res, next) => {
   });
 };
 
-// const uploadMulterEmployee = multer({
-//   storage: diskStorage,
-// }).single("profilePicture");
-// let uploadEmployee = (req, res, next) => {
-//   uploadMulterEmployee(req, res, function (err) {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (typeof req.file == "undefined") {
-//       next();
-//     } else {
-//       image =
-//         req.protocol + "://" + req.get("host") + "/assets/" + req.file.filename;
-//       req.file.path = image;
-//       next();
-//     }
-//   });
-// };
+const uploadMulterCar = multer({
+  storage: diskStorage,
+}).single("carImage");
+let uploadCar = (req, res, next) => {
+  uploadMulterCar(req, res, function (err) {
+    if (err) {
+      return next(err);
+    }
+    if (typeof req.file == "undefined") {
+      next();
+    } else {
+      image =
+        req.protocol + "://" + req.get("host") + "/assets/" + req.file.filename;
+      req.file.path = image;
+      next();
+    }
+  });
+};
 
-module.exports = uploadUser;
+module.exports = {uploadUser, uploadCar};

@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       car.hasOne(models.order);
+      car.belongsTo(models.brand);
+      car.belongsTo(models.rentHouse)
     }
   }
   car.init({
@@ -28,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     rentHouseId: DataTypes.INTEGER
   }, {
+    hooks: {
+      beforeCreate: function(car, options){
+        car.status = "Available"
+      }
+    },
     sequelize,
     modelName: 'car',
   });

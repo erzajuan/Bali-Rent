@@ -1,6 +1,6 @@
 const userRoute = require("express").Router();
 const { userController } = require("../controllers");
-const uploadUser = require('../services/multer');
+const { uploadUser } = require("../services/multer");
 
 userRoute.get("/", userController.getUsers);
 userRoute.post("/", uploadUser, userController.register);

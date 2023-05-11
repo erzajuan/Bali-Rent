@@ -10,10 +10,13 @@ const userRoute = require("./user_route");
 const employeeRoute = require("./employee_route");
 const orderRoute = require("./order_route");
 const rentHouseRoute = require("./rent_house_route");
+const carRoute = require("./car_route");
+
 
 route.use("/api/users", userRoute);
 route.use("/api/employes", employeeRoute);
 route.use("/api/orders", orderRoute);
 route.use("/api/rent",rentHouseRoute);
+route.use("/api/car",carRoute);
 
 module.exports = route;
