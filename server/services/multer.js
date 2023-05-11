@@ -47,4 +47,23 @@ let uploadCar = (req, res, next) => {
   });
 };
 
-module.exports = {uploadUser, uploadCar};
+const uploadMulterBrand = multer({
+  storage: diskStorage,
+}).single("brandImage");
+let uploadBrand = (req, res, next) => {
+  uploadMulterBrand(req, res, function (err) {
+    if (err) {
+      return next(err);
+    }
+    if (typeof req.file == "undefined") {
+      next();
+    } else {
+      image =
+        req.protocol + "://" + req.get("host") + "/assets/" + req.file.filename;
+      req.file.path = image;
+      next();
+    }
+  });
+};
+
+module.exports = {uploadUser, uploadCar, uploadBrand};

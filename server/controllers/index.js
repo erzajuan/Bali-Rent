@@ -3,6 +3,7 @@ const employeeController = require("./employee_controller");
 const orderController = require("./order_controller");
 const rentHouseController = require("./rent_house_controller");
 const carController = require("./car_controller");
+const brandController = require("./brand_controller")
 
 module.exports = {
   userController,
@@ -10,4 +11,5 @@ module.exports = {
   orderController,
   rentHouseController,
   carController,
+  brandController
 };
