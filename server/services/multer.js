@@ -18,6 +18,7 @@ let uploadUser = (req, res, next) => {
       return next(err);
     }
     if (typeof req.file == "undefined") {
+      console.log(req.file)
       next();
     } else {
       image =
@@ -66,4 +67,4 @@ let uploadBrand = (req, res, next) => {
   });
 };
 
-module.exports = {uploadUser, uploadCar, uploadBrand};
+module.exports = { uploadUser, uploadCar, uploadBrand };

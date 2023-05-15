@@ -16,8 +16,8 @@ const brandRoute = require("./brand_route");
 route.use("/api/users", userRoute);
 route.use("/api/employes", employeeRoute);
 route.use("/api/orders", orderRoute);
-route.use("/api/rent", rentHouseRoute);
-route.use("/api/car", carRoute);
+route.use("/api/rents", rentHouseRoute);
+route.use("/api/cars", carRoute);
 route.use("/api/brands", brandRoute);
 
 module.exports = route;

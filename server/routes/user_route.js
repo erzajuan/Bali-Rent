@@ -7,7 +7,7 @@ userRoute.post("/", uploadUser, userController.register);
 userRoute.post("/login", userController.login);
 userRoute.get("/detail/:id", userController.detail);
 userRoute.put("/:id", uploadUser, userController.update);
-
-// userRoute.delete("/:id", userController.delete);
+userRoute.delete("/:id", userController.delete);
+userRoute.put("/changePassword/:id", userController.changePassword)
 
 module.exports = userRoute;
