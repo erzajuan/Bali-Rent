@@ -30,11 +30,28 @@ class BrandController {
     try {
       const id = +req.params.id;
       const { brandName } = req.body;
-      let brandImage = req.file.path;
+
+      const resultBrand = await brand.findByPk(id);
+
+      let brandImage = "";
+
+      if (resultBrand.brandImage == "https://via.placeholder.com/150") {
+        if (typeof req.file == "undefined") {
+          brandImage = "https://via.placeholder.com/150";
+        } else {
+          brandImage = req.file.path;
+        }
+      } else {
+        if (typeof req.file == "undefined") {
+          brandImage = resultBrand.image;
+        } else {
+          brandImage = req.file.path;
+        }
+      }
       let result = await brand.update(
         {
           brandName,
-          brandImage
+          brandImage,
         },
         {
           where: { id },

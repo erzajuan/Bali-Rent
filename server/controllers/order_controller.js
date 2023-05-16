@@ -13,14 +13,16 @@ class OrderController {
   static async addOrder(req, res) {
     try {
       let userId = req.userData.id;
-      const { orderDate, startDate, finishDate, carId, rentHouseId } = req.body;
+      const { orderDate, startDate, finishDate, carId } = req.body;
+      let findCar = await car.findByPk(carId);
+
       let result = await order.create({
         orderDate,
         startDate,
         finishDate,
         carId,
         userId,
-        rentHouseId,
+        rentHouseId: findCar.rentHouseId,
       });
       res.status(201).json(result);
     } catch (error) {
@@ -31,13 +33,28 @@ class OrderController {
   static async detail(req, res) {
     try {
       const id = +req.params.id;
-      console.log(id);
       let result = await order.findByPk(id, {
         include: [user, car, rentHouse],
       });
       res.status(200).json(result);
     } catch (error) {
       res.status(404).json(error);
+    }
+  }
+
+  static async delete(req, res) {
+    try {
+      const id = +req.params.id;
+      let result = await order.destroy({ where: { id } });
+      result == 1
+        ? res
+            .status(200)
+            .json({ message: `Order dengan id ${id} berhasil dihapus` })
+        : res
+            .status(404)
+            .json({ message: `Order dengan id ${id} gagal dihapus` });
+    } catch (error) {
+      res.status(500).json(error);
     }
   }
 }

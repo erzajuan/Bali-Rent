@@ -65,10 +65,12 @@ class EmployeeController {
       });
 
       let resultEmail = await employee.findOne({
+        include: [rentHouse],
         where: { email: login },
       });
 
       let resultPhone = await employee.findOne({
+        include: [rentHouse],
         where: { phoneNumber: login },
       });
 

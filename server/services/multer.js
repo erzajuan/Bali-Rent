@@ -18,7 +18,6 @@ let uploadUser = (req, res, next) => {
       return next(err);
     }
     if (typeof req.file == "undefined") {
-      console.log(req.file)
       next();
     } else {
       image =

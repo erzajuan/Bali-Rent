@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class rentHouse extends Model {
     /**
@@ -15,12 +13,21 @@ module.exports = (sequelize, DataTypes) => {
       rentHouse.hasMany(models.order);
     }
   }
-  rentHouse.init({
-    address: DataTypes.STRING,
-    employeeId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'rentHouse',
-  });
+  rentHouse.init(
+    {
+      address: {
+        type: DataTypes.STRING,
+        validate: { notEmpty: { msg: "Adress Tidak Boleh Kosong" } },
+      },
+      employeeId: {
+        type: DataTypes.INTEGER,
+        validate: { notEmpty: { msg: "Employee ID Tidak Boleh Kosong" } },
+      },
+    },
+    {
+      sequelize,
+      modelName: "rentHouse",
+    }
+  );
   return rentHouse;
 };

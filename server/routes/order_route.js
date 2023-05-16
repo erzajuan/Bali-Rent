@@ -6,5 +6,6 @@ orderRoute.get("/", orderController.getOrder);
 orderRoute.post("/", checkToken, orderController.addOrder);
 orderRoute.get("/detail/:id", orderController.detail);
 // orderRoute.put("/:id", orderController.update);
+orderRoute.delete("/:id", orderController.delete);
 
 module.exports = orderRoute;

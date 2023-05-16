@@ -6,5 +6,6 @@ const { uploadCar } = require("../services/multer");
 carRoute.get("/", carController.getCar);
 carRoute.post("/", uploadCar, checkToken, carController.addCar);
 carRoute.put("/:id", uploadCar, carController.updateCar);
+carRoute.delete("/:id", carController.delete)
 
 module.exports = carRoute;
