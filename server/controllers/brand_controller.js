@@ -14,7 +14,10 @@ class BrandController {
     try {
       const { brandName } = req.body;
 
-      let brandImage = req.file.path;
+      let brandImage = "";
+      typeof req.file == "undefined"
+        ? (brandImage = "https://via.placeholder.com/150")
+        : (brandImage = req.file.path);
 
       let result = await brand.create({
         brandName,
