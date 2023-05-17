@@ -79,22 +79,26 @@ class UserControlelr {
 
       if (resultUsername) {
         if (decrypt(password, resultUsername.password)) {
+          const { id } = resultUsername.dataValues;
           let access_token = generateTokenUser(resultUsername);
-          res.status(200).json({ access_token });
+          res.status(200).json({ access_token, id });
         } else {
           res.status(403).json({ message: "Password Salah" });
         }
       } else if (resultEmail) {
+        const { id } = resultEmail.dataValues;
+
         if (decrypt(password, resultEmail.password)) {
           let access_token = generateTokenUser(resultEmail);
-          res.status(200).json({ access_token });
+          res.status(200).json({ access_token, id });
         } else {
           res.status(403).json({ message: "Password Salah" });
         }
       } else if (resultPhone) {
+        const { id } = resultPhone.dataValues;
         if (decrypt(password, resultPhone.password)) {
           let access_token = generateTokenUser(resultPhone);
-          res.status(200).json({ access_token });
+          res.status(200).json({ access_token, id });
         } else {
           res.status(403).json({ message: "Password Salah" });
         }
@@ -201,9 +205,7 @@ class UserControlelr {
           res.status(403).json({ message: "Password Salah" });
         }
       } else {
-        res
-          .status(404)
-          .json({ message: `Password Baru Tidak Sesuai` });
+        res.status(404).json({ message: `Password Baru Tidak Sesuai` });
       }
     } catch (error) {
       res.status(500).json(error);
