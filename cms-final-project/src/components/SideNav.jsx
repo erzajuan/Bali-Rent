@@ -27,7 +27,15 @@ const SideNav = () => {
             {!collapsed ? <Typography variant="body2" sx={styles.yourChannel}>Your Company</Typography>:null}
             {!collapsed ? <Typography variant="overline">Status</Typography>:null}
         </Box>
-        <Menu>
+        <Menu
+            menuItemStyles={{
+                button:({active}) => {
+                    return{
+                        backgroundColor: active? theme.palette.neutral.medium: undefined
+                    }
+                } 
+            }}
+        >
             <MenuItem active={location.pathname === '/'} component={<Link to={"/"}/>} icon={<AccountBoxOutlinedIcon></AccountBoxOutlinedIcon>}>
                 <Typography variant="body2">Profile</Typography>
             </MenuItem>

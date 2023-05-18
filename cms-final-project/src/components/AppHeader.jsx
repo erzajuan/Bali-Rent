@@ -2,12 +2,14 @@ import {AppBar, IconButton, Toolbar, Box, Badge} from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
+import {useProSidebar} from 'react-pro-sidebar'
 
 const AppHeader = () => {
+    const {collapseSidebar, toggleSidebar, broken} = useProSidebar()
     return(
         <AppBar position="sticky" sx={styles.appBar}>
             <Toolbar>
-                <IconButton color='secondary'>
+                <IconButton onClick={() => broken ? toggleSidebar():collapseSidebar()} color="secondary">
                     <MenuIcon/>
                 </IconButton>
                 <Box
