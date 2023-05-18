@@ -27,6 +27,15 @@ module.exports = {
       rentHouseId: {
         type: Sequelize.INTEGER
       },
+      paymentId: {
+        type: Sequelize.STRING
+      },
+      transactionStatus: {
+        type: Sequelize.STRING
+      },
+      responseMidtrans: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

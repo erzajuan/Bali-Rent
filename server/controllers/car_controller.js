@@ -4,9 +4,17 @@ class CarController {
   static async getCar(req, res) {
     try {
       let result = await car.findAll({ include: [brand, rentHouse] });
-      res.status(200).json(result);
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mendapatkan data",
+        data: result,
+      });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal mendapatkan data",
+        error: error,
+      });
     }
   }
 
@@ -25,9 +33,13 @@ class CarController {
       } = req.body;
 
       if (req.userData.rentHouse == null) {
-        res.status(404).json({ message: "Anda Belum Mempunyai Tempat Rental" });
+        res.status(404).json({
+          status: false,
+          message: "Anda Belum Mempunyai Tempat Rental",
+        });
       } else {
-        let rentHouseId = req.userData.rentHouse.id;
+        const rentHouseId = req.userData.rentHouse.id;
+
         let carImage = "";
         typeof req.file == "undefined"
           ? (carImage = "https://via.placeholder.com/150")
@@ -46,16 +58,25 @@ class CarController {
           carImage,
           rentHouseId,
         });
-        res.status(201).json(result);
+        res.status(201).json({
+          status: true,
+          message: "Berhasil menambahkan mobil",
+          data: result,
+        });
       }
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal menambahkan mobil",
+        error: error,
+      });
     }
   }
 
   static async updateCar(req, res) {
     try {
-      const id = +req.params.id;
+      const id = +req.userData.id;
+      const resultCar = await car.findByPk(id);
       const {
         name,
         rentPrice,
@@ -67,7 +88,6 @@ class CarController {
         transmission,
         wdType,
       } = req.body;
-      const resultCar = await car.findByPk(id);
 
       let carImage = "";
       if (resultCar.profilePicture == "https://via.placeholder.com/150") {
@@ -101,14 +121,20 @@ class CarController {
         }
       );
       result == 1
-        ? res
-            .status(200)
-            .json({ message: `Car dengan id ${id} berhasil diupdate` })
-        : res
-            .status(404)
-            .json({ message: `Car dengan id ${id} gagal diupdate` });
+        ? res.status(200).json({
+            status: true,
+            message: `Car dengan id ${id} berhasil diupdate`,
+          })
+        : res.status(404).json({
+            status: false,
+            message: `Car dengan id ${id} gagal diupdate`,
+          });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal menghaous mobil",
+        error: error,
+      });
     }
   }
 
@@ -116,18 +142,23 @@ class CarController {
     try {
       const id = +req.params.id;
 
-      let resultOrder = await order.destroy({ where: { carId: id } });
-
+      await order.destroy({ where: { carId: id } });
       let result = await car.destroy({ where: { id } });
       result == 1
-        ? res
-            .status(200)
-            .json({ message: `Car dengan id ${id} berhasil dihapus` })
-        : res
-            .status(404)
-            .json({ message: `Car dengan id ${id} gagal dihapus` });
+        ? res.status(200).json({
+            status: true,
+            message: `Car dengan id ${id} berhasil dihapus`,
+          })
+        : res.status(404).json({
+            status: false,
+            message: `Car dengan id ${id} gagal dihapus`,
+          });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal menghapus mobil",
+        error: error,
+      });
     }
   }
 }

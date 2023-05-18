@@ -40,6 +40,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         validate: { notEmpty: { message: "Rent House ID Tidak Boleh Kosong" } },
       },
+      paymentId: {
+        type: DataTypes.STRING,
+      },
+      transactionStatus: {
+        type: DataTypes.STRING,
+      },
+      responseMidtrans: {
+        type: DataTypes.TEXT,
+      },
     },
     {
       sequelize,

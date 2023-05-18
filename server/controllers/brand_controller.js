@@ -37,7 +37,6 @@ class BrandController {
       const resultBrand = await brand.findByPk(id);
 
       let brandImage = "";
-
       if (resultBrand.brandImage == "https://via.placeholder.com/150") {
         if (typeof req.file == "undefined") {
           brandImage = "https://via.placeholder.com/150";
@@ -51,6 +50,7 @@ class BrandController {
           brandImage = req.file.path;
         }
       }
+      
       let result = await brand.update(
         {
           brandName,

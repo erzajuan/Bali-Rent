@@ -4,16 +4,24 @@ class RentHouseController {
   static async getRentHouse(req, res) {
     try {
       let result = await rentHouse.findAll({ include: [employee] });
-      res.status(200).json(result);
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mendapatkan data",
+        data: result,
+      });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal mendapatkan data",
+        error: error,
+      });
     }
   }
 
   static async createRentHouse(req, res) {
     try {
       const { address } = req.body;
-      let employeeId = req.userData.id;
+      const employeeId = req.userData.id;
 
       let findRentHouse = await rentHouse.findOne({
         where: { employeeId: employeeId },
@@ -26,10 +34,18 @@ class RentHouseController {
           address,
           employeeId,
         });
-        res.status(201).json(result);
+        res.status(201).json({
+          status: true,
+          message: "Berhasil membuat rental",
+          data: result,
+        });
       }
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal membuat rental",
+        error: error,
+      });
     }
   }
 
@@ -37,6 +53,7 @@ class RentHouseController {
     try {
       const id = +req.params.id;
       const { address } = req.body;
+
       let result = await rentHouse.update(
         {
           address,
@@ -46,14 +63,20 @@ class RentHouseController {
         }
       );
       result == 1
-        ? res
-            .status(200)
-            .json({ message: `Rent House dengan id ${id} berhasil diupdate` })
-        : res
-            .status(404)
-            .json({ message: `Rent House dengan id ${id} gagal diupdate` });
+        ? res.status(200).json({
+            status: true,
+            message: `Rent House dengan id ${id} berhasil diupdate`,
+          })
+        : res.status(404).json({
+            status: false,
+            message: `Rent House dengan id ${id} gagal diupdate`,
+          });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal mengupdate rental",
+        error: error,
+      });
     }
   }
 
@@ -61,20 +84,25 @@ class RentHouseController {
     try {
       const id = +req.params.id;
 
-      let resultCar = await car.destroy({ where: { rentHouseId: id } });
-
+      await car.destroy({ where: { rentHouseId: id } });
       let result = await rentHouse.destroy({
         where: { id },
       });
       result == 1
-        ? res
-            .status(200)
-            .json({ message: `Rent House dengan id ${id} berhasil dihapus` })
-        : res
-            .status(404)
-            .json({ message: `Rent House dengan id ${id} gagal dihapus` });
+        ? res.status(200).json({
+            status: true,
+            message: `Rent House dengan id ${id} berhasil dihapus`,
+          })
+        : res.status(404).json({
+            status: false,
+            message: `Rent House dengan id ${id} gagal dihapus`,
+          });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal menghapus data",
+        error: error,
+      });
     }
   }
 }
