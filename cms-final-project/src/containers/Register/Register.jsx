@@ -1,8 +1,11 @@
-import {Button, Stack, TextField, Typography} from "@mui/material"
+import {Button, Grid, Paper, Stack, TextField, Typography} from "@mui/material"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { registerEmployee } from "../../fetches/employeeAxios"
 
 const Register = () => {
+
+    const navigation = useNavigate()
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -12,14 +15,31 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        const formRegister = {
+            name: `${firstName} ${lastName}`,
+            username: `${firstName}${lastName}`,
+            email: email,
+            password: password,
+            phoneNumber: phoneNum
+        }
+
+        registerEmployee(formRegister, (status) => {
+            console.log(status)
+            if(status){
+                navigation("/login")
+            }
+        })
+
         console.log(firstName, lastName, phoneNum, email, password)
     }
 
     return(
-                <><Typography variant="h4">Profile</Typography><>
-                    <form onSubmit={handleSubmit} action={<Link to="/login" />}> 
+            <Grid>
+                <Paper sx={styles.paperLogin}>
+                <><Typography variant="h4">Register</Typography><>
+                    <form onSubmit={handleSubmit}> 
                         {/* default value must be same from user login profile and taken from profile database */}
-                        <Stack spacing={2} direction={"row"} sx={{mb:4, mt:1}}>
+                        <Stack spacing={2} direction={"row"} sx={{mb:4, mt:2}}>
                             <TextField
                                 label='First Name'
                                 type='text'
@@ -64,11 +84,24 @@ const Register = () => {
                             onChange={e => setPassword(e.target.value)}
                             value={password}
                         />
-                        <Button type="button" variant="outlined">Register</Button>
+                        <Button type="submit" variant="outlined" sx={{mb:1}}>Register</Button>
                     </form>
                     <small>Already have an account ? <Link to={'/login'}>Login Here</Link></small>
                 </></>
+                </Paper>
+            </Grid>
     )
 }
 
 export default Register
+
+/** @type {import('@mui/material').SxProps} */
+const styles = {
+    paperLogin:{
+        padding: 10,
+        height: '70vh',
+        width:500,
+        margin:'0 auto',
+        backgroundColor: 'white'
+    }
+}

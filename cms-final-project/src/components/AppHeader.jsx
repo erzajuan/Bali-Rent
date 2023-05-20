@@ -3,9 +3,21 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useProSidebar} from 'react-pro-sidebar'
+import { useNavigate } from "react-router-dom";
 
-const AppHeader = () => {
+const AppHeader = (props) => {
+    const {handleLoginCb} = props
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        localStorage.clear()
+        handleLoginCb(false)
+        navigate('/login')
+
+    }
+
     const {collapseSidebar, toggleSidebar, broken} = useProSidebar()
+    
     return(
         <AppBar position="sticky" sx={styles.appBar}>
             <Toolbar>
@@ -23,7 +35,7 @@ const AppHeader = () => {
                         <NotificationsIcon color="secondary"/>
                     </Badge>
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => handleLogout()}>
                     <LogoutIcon color='secondary'/>
                 </IconButton>
             </Toolbar>        

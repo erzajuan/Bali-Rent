@@ -5,10 +5,12 @@ import AddCar from '../containers/Car/AddCar'
 import Login from '../containers/Login/Login'
 import {Route, Routes} from "react-router-dom"
 
-const AppRouter = () => {
+const AppRouter = (props) => {
+    const {employee} = props
+
     return(
     <Routes>
-        <Route path="/" element={<Profile/>}/>
+        <Route path="/" element={<Profile employee={employee}/>}/>
         <Route path="/showcar" element={<ShowCar/>}/>
         <Route path="/addcar" element={<AddCar/>}/>
         <Route path="/orderrental" element={<Order/>}/>

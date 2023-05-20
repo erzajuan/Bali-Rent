@@ -8,7 +8,11 @@ import BookOnlineOutlinedIcon from '@mui/icons-material/BookOnlineOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
-const SideNav = () => {
+const SideNav = (props) => {
+    const {handleDetailEmployee} = props
+    const id_employee = localStorage.getItem('id')
+    console.log(id_employee)
+
     const theme = useTheme()
     const {collapsed} = useProSidebar()
     const location = useLocation()
@@ -36,7 +40,7 @@ const SideNav = () => {
                 } 
             }}
         >
-            <MenuItem active={location.pathname === '/'} component={<Link to={"/"}/>} icon={<AccountBoxOutlinedIcon></AccountBoxOutlinedIcon>}>
+            <MenuItem active={location.pathname === '/'} component={<Link to={"/"}/>} onClick={() => handleDetailEmployee(id_employee)} icon={<AccountBoxOutlinedIcon></AccountBoxOutlinedIcon>}>
                 <Typography variant="body2">Profile</Typography>
             </MenuItem>
             <SubMenu label="Car List" icon={<CarRentalOutlinedIcon/>}>
