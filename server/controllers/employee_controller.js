@@ -103,6 +103,7 @@ class EmployeeController {
         if (decrypt(password, resultUsername.password)) {
           let access_token = generateTokenEmployee(resultUsername);
           res.status(200).json({
+            id: resultUsername.id,
             status: true,
             message: "Berhasil login",
             access_token: access_token,
@@ -117,6 +118,7 @@ class EmployeeController {
         if (decrypt(password, resultEmail.password)) {
           let access_token = generateTokenEmployee(resultEmail);
           res.status(200).json({
+            id: resultEmail.id,
             status: true,
             message: "Berhasil login",
             access_token: access_token,
@@ -131,6 +133,7 @@ class EmployeeController {
         if (decrypt(password, resultPhone.password)) {
           let access_token = generateTokenEmployee(resultPhone);
           res.status(200).json({
+            id: resultPhone.id,
             status: true,
             message: "Berhasil login",
             access_token: access_token,

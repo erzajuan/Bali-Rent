@@ -75,7 +75,7 @@ class CarController {
 
   static async updateCar(req, res) {
     try {
-      const id = +req.userData.id;
+      const id = +req.params.id;
       const resultCar = await car.findByPk(id);
       const {
         name,
@@ -88,7 +88,6 @@ class CarController {
         transmission,
         wdType,
       } = req.body;
-
       let carImage = "";
       if (resultCar.profilePicture == "https://via.placeholder.com/150") {
         if (typeof req.file == "undefined") {
@@ -103,6 +102,7 @@ class CarController {
           carImage = req.file.path;
         }
       }
+      
       let result = await car.update(
         {
           name,
