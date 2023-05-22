@@ -110,7 +110,7 @@ class RentHouseController {
     try {
       const id = +req.params.id;
 
-      let result = await rentHouse.findByPk(id, { include: [car] });
+      let result = await rentHouse.findByPk(id, { include: [employee] });
       res.status(200).json({
         status: true,
         message: "Berhasil mendapatkan data",
