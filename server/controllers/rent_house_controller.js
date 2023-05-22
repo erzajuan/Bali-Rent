@@ -105,6 +105,25 @@ class RentHouseController {
       });
     }
   }
+
+  static async detail(req, res) {
+    try {
+      const id = +req.params.id;
+
+      let result = await rentHouse.findByPk(id, { include: [car] });
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mendapatkan data",
+        data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        message: "Gagal mendapatkan data",
+        error: error,
+      });
+    }
+  }
 }
 
 module.exports = RentHouseController;
