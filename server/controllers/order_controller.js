@@ -64,6 +64,12 @@ class OrderController {
               responseMidtrans: JSON.stringify(chargeResponse),
             })
             .then(() => {
+              car.update(
+                {
+                  status: "Not-Available",
+                },
+                { where: { id: carId } }
+              );
               res.status(201).json({
                 status: true,
                 message: "Berhasil membuat order",
@@ -104,7 +110,14 @@ class OrderController {
 
   static async delete(req, res) {
     try {
-      const id = +req.userData.id;
+      const id = +req.params.id;
+
+      let cekOrder = await order.findOne({ where: { id }, include: [car] });
+
+      await car.update(
+        { status: "Available" },
+        { where: { id: cekOrder.car.id } }
+      );
 
       let result = await order.destroy({ where: { id } });
       result == 1
@@ -184,7 +197,7 @@ class OrderController {
                 })
               : res.status(404).json({
                   status: false,
-                  message: `Order dengan id ${paymentId} gagal diupdate`,
+                  message: `Order dengan id ${paymentId} tidak ditemukan`,
                 });
           });
       })

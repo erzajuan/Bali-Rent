@@ -6,9 +6,10 @@ orderRoute.get("/", orderController.getOrder);
 orderRoute.get("/detail/", checkToken, orderController.detail);
 
 orderRoute.post("/", checkToken, orderController.addOrder);
+
 orderRoute.put("/:paymentId", checkToken, orderController.cekStatus);
 // orderRoute.put("/", orderController.status);
 
-orderRoute.delete("/", checkToken, orderController.delete);
+orderRoute.delete("/:id", checkToken, orderController.delete);
 
 module.exports = orderRoute;
