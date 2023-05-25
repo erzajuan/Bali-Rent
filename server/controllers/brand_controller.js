@@ -4,9 +4,17 @@ class BrandController {
   static async getBrand(req, res) {
     try {
       let result = await brand.findAll({ include: [car] });
-      res.status(200).json(result);
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mendapatkan data",
+        data: result,
+      });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal mendapatkan data",
+        error: error,
+      });
     }
   }
 
@@ -23,9 +31,17 @@ class BrandController {
         brandName,
         brandImage,
       });
-      res.status(201).json(result);
+      res.status(200).json({
+        status: true,
+        message: "Berhasil menambahkan brand",
+        data: result,
+      });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({
+        status: false,
+        message: "Gagal mendapatkan brandd",
+        error: error,
+      });
     }
   }
 

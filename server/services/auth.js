@@ -2,9 +2,9 @@ const jwt = require("jsonwebtoken");
 const token = process.env.TOKEN || "token";
 
 const generateTokenUser = (data) => {
-  const { id, name, username, email, phoneNumber, profilePicture, orders } = data;
+  const { id, name, username, email, phoneNumber, profilePicture } = data;
 
-  return jwt.sign({ id, name, username, email, phoneNumber, profilePicture, orders }, token);
+  return jwt.sign({ id, name, username, email, phoneNumber, profilePicture }, token);
 };
 
 const generateTokenEmployee = (data) => {
