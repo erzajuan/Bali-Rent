@@ -15,11 +15,16 @@ const createRentHouse = async (data, handleHaveAddress) => {
                 access_token
             }
         })
-        console.log(result.data);
+        console.log('result create rent house',result.data);
         // const id_address = result.data.id
         // localStorage.setItem('id_address',id_address)
         console.log('finish create rent house!')
-        Swal.fire("Create Address Success", "Your Address Has Been Created", "success");
+        handleHaveAddress(false)
+        Swal.fire("Create Address Success", "Your Address Has Been Created", "success")
+        .then(() => {
+            Swal.fire("Information", "Please Login again!", "info")
+            // window.location.reload();
+        });
         
     }
     catch(err){
@@ -45,7 +50,10 @@ const updateRentHouse = async (id_address, response) => {
             }
         })
         console.log('finish update rent house')
-        Swal.fire("Update Address Success", "Your Address Has Been Updated", "success");
+        Swal.fire("Update Address Success", "Your Address Has Been Updated", "success")
+        .then(() => {
+            window.location.reload();
+        });
     }
     catch(err){
         console.log(err)

@@ -7,11 +7,49 @@ import CarRentalOutlinedIcon from '@mui/icons-material/CarRentalOutlined';
 import BookOnlineOutlinedIcon from '@mui/icons-material/BookOnlineOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "./GetterValPage";
+import { detailEmployee } from "../fetches/employeeAxios";
 
 const SideNav = (props) => {
     const {handleDetailEmployee} = props
     const id_employee = localStorage.getItem('id')
     console.log(id_employee)
+
+    // Get data profile
+    const [profile, setProfile] = useState({
+        firstName:'',
+        lastName:'',
+        phoneNum:'',
+        email:'',
+        role:''
+    })
+    const detail = () => {
+        detailEmployee(+id_employee, (response) => {
+            console.log('response detail',response)
+            const fullName = response.name.split(' ')
+            // console.log(fullName.slice(1))
+            setProfile({
+                firstName:fullName[0],
+                lastName:fullName.slice(1).join(' '),
+                phoneNum: response.phoneNumber,
+                email:response.email,
+                role:response.role
+            })
+        })
+    }
+
+    useEffect(() => {
+        detail();
+        // const interval = setInterval(detail, 1000)
+        // return () => {
+        //     clearInterval(interval)
+        // }
+    }, []);
+
+    const firstNameEmployee = profile.firstName || "Un"
+    const lastNameEmployee = profile.lastName.split(' ')[0] || "Known"
+    const roleEmployee = profile.role || "Rent"
 
     const theme = useTheme()
     const {collapsed} = useProSidebar()
@@ -27,9 +65,9 @@ const SideNav = (props) => {
                 backgroundColor = {theme.palette.neutral.light}     
         >
         <Box sx={styles.avatarContainer}>
-            <Avatar sx={{width:50, height:50}} alt="Name Profile">ZP</Avatar>
-            {!collapsed ? <Typography variant="body2" sx={styles.yourChannel}>Your Company</Typography>:null}
-            {!collapsed ? <Typography variant="overline">Status</Typography>:null}
+            <Avatar sx={{width:50, height:50}} alt="Name Profile">{`${firstNameEmployee.charAt(0)}${lastNameEmployee.charAt(0)}`}</Avatar>
+            {!collapsed ? <Typography variant="body2" sx={styles.yourChannel}>{`${firstNameEmployee} ${lastNameEmployee}`}</Typography>:null}
+            {!collapsed ? <Typography variant="overline">{roleEmployee}</Typography>:null}
         </Box>
         <Menu
             menuItemStyles={{

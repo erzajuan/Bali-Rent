@@ -6,11 +6,11 @@ import Login from '../containers/Login/Login'
 import {Route, Routes} from "react-router-dom"
 
 const AppRouter = (props) => {
-    const {employee} = props
+    const {employee, handleLoginCb} = props
 
     return(
     <Routes>
-        <Route path="/" element={<Profile employee={employee}/>}/>
+        <Route path="/" element={<Profile employee={employee} handleLoginCb = {handleLoginCb}/>}/>
         <Route path="/showcar" element={<ShowCar/>}/>
         <Route path="/addcar" element={<AddCar/>}/>
         <Route path="/orderrental" element={<Order/>}/>

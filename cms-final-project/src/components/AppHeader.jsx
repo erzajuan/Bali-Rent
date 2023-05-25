@@ -30,11 +30,11 @@ const AppHeader = (props) => {
                     src="\src\assets\logo.png"
                 />
                 <Box sx={{flexGrow:1}}></Box>
-                <IconButton>
+                {/* <IconButton>
                     <Badge badgeContent={4} color="success">
                         <NotificationsIcon color="secondary"/>
                     </Badge>
-                </IconButton>
+                </IconButton> */}
                 <IconButton onClick={() => handleLogout()}>
                     <LogoutIcon color='secondary'/>
                 </IconButton>

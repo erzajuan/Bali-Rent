@@ -20,6 +20,11 @@ const loginEmployee = async (employee, handleLoginCb) => {
         handleLoginCb(true)
     }
     catch(err){
+        Swal.fire({
+            icon:"error",
+            title:"Login Failed",
+            text:err.response.data.message
+        })
         console.log(err)
     } 
 }
@@ -37,6 +42,11 @@ const registerEmployee = async (employee, handleRegisterCb) => {
 
     }
     catch(err){
+        Swal.fire({
+            icon:"error",
+            title:"Register Failed",
+            text:err.response.data.message
+        })        
         console.log(err)
     }
 }
@@ -76,7 +86,14 @@ const updateEmployee = async (id, response) => {
         })
         console.log(result.data)
         console.log('finish update employee')
-        Swal.fire("Update Profile Success", "Your Profile Has Been Updated", "success");
+        Swal.fire(
+            "Update Profile Success", 
+            "Your Profile Has Been Updated", 
+            "success"
+        ).then(() => {
+            window.location.reload();
+        });
+            
     }
     catch(err){
         console.log(err)
@@ -96,10 +113,18 @@ const changePasswordEmployee = async (response, handleChangePasswordCb) => {
             }
         })
         console.log('finsih change password')
-        Swal.fire("Update Password Success", "Your Password Has Been Updated", "success");
         handleChangePasswordCb(true)
+        Swal.fire("Update Password Success", "Your Password Has Been Updated", "success")
+        .then(() => {
+            window.location.reload();
+        });
     }
     catch(err){
+        Swal.fire({
+            icon:"error",
+            title:"Change Password Failed",
+            text:err.response.data.message
+        })
         console.log(err)
     }
 }

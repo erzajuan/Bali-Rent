@@ -1,14 +1,16 @@
 import {Box, Button, IconButton, InputAdornment, Stack, Tab, Tabs, TextField, Typography} from "@mui/material"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import TabPanel from "../../components/TabPanel"
 import { changePasswordEmployee, detailEmployee, updateEmployee } from "../../fetches/employeeAxios"
 import { createRentHouse, detailRentHouse, updateRentHouse } from "../../fetches/renthouseAxios"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom"
+import { AppContext } from "../../components/GetterValPage"
 
-const Profile = () => {
+const Profile = (props) => {
     // Get id for get detail and update
+    const {handleLoginCb} = props
     const id_employee = localStorage.getItem('id')
     const navigation = useNavigate()
 
@@ -18,11 +20,11 @@ const Profile = () => {
         lastName:'',
         phoneNum:'',
         email:'',
-        pass:''
+        role:''
     })
     const detail = () => {
         detailEmployee(+id_employee, (response) => {
-            // console.log(response)
+            console.log('response detail',response)
             const fullName = response.name.split(' ')
             // console.log(fullName.slice(1))
             setProfile({
@@ -30,10 +32,11 @@ const Profile = () => {
                 lastName:fullName.slice(1).join(' '),
                 phoneNum: response.phoneNumber,
                 email:response.email,
-                pass:'123'
+                role:response.role
             })
         })
     }
+
     useEffect(() => {
         detail();
     }, []);
@@ -50,7 +53,7 @@ const Profile = () => {
                 email: profile.email
             }
             updateEmployee(+id_employee, newProfile)
-
+            
         }
         catch(err){
             console.log(err)
@@ -81,7 +84,7 @@ const Profile = () => {
             console.log(addressLine)
 
             createRentHouse({address:addressLine}, (haveAddress) => { 
-                // console.log(haveAddress)
+                console.log('haveAddress:',haveAddress)
                 const id_address = localStorage.getItem('id_address')
                 if(haveAddress){
                     try{
@@ -92,12 +95,18 @@ const Profile = () => {
                     }
                     
                 }
+                else{
+                    localStorage.clear()
+                    handleLoginCb(false)
+                    navigation('/login')
+                }
             })
         }
         catch(err){
             console.log(err)
         }
     }
+    
     
     const detailAdress = () => {
         detailRentHouse(id_employee, (response) => {
@@ -208,17 +217,7 @@ const Profile = () => {
                             value={profile.email}
                             onChange={(e) => setProfile({...profile, email: e.target.value})}
                         />
-                        <TextField
-                            label='Password'
-                            type="password"
-                            required
-                            fullWidth
-                            sx={{mb:4}}
-                            defaultValue="123"
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end"><Visibility/></InputAdornment>,
-                            }}
-                        />
+                        
                         <Button type="submit" variant="outlined">Save</Button>
                     </form>
                 </></>

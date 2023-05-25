@@ -9,6 +9,7 @@ import { ProSidebarProvider } from 'react-pro-sidebar';
 import './App.css'
 import { useNavigate } from 'react-router-dom'
 import { detailEmployee } from './fetches/employeeAxios'
+import { AppProvider } from './components/GetterValPage'
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false)
@@ -27,6 +28,8 @@ function App() {
   useEffect(() => {
     if(localStorage.getItem('access_token')){
       setLoginStatus(true)
+      //change path to profile
+      navigation('/')
     }
     else{
       setLoginStatus(false)
@@ -41,13 +44,15 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline/>
           <ProSidebarProvider>
-            <AppHeader handleLoginCb = {handleLoginCb}></AppHeader>
-            <Box sx={styles.container}>
-                <SideNav handleDetailEmployee={handleDetailEmployee}></SideNav>
-                <Box component={"main"} sx={styles.mainSection}>
-                  <AppRouter employee={employee}></AppRouter>
-                </Box>
-            </Box>
+            <AppProvider>
+              <AppHeader handleLoginCb = {handleLoginCb}></AppHeader>
+              <Box sx={styles.container}>
+                  <SideNav handleDetailEmployee={handleDetailEmployee}></SideNav>
+                  <Box component={"main"} sx={styles.mainSection}>
+                    <AppRouter employee={employee} handleLoginCb = {handleLoginCb}></AppRouter>
+                  </Box>
+              </Box>
+            </AppProvider>
           </ProSidebarProvider>
         </ThemeProvider>
         :

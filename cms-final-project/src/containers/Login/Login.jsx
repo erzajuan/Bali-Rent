@@ -31,8 +31,8 @@ const Login = (props) => {
                 password: password
             }
             loginEmployee(loginJSON, handleLoginCb)
-            //change path to profile
-            navigate('/')
+            // //change path to profile
+            // navigate('/')
         }
     }
     return (
