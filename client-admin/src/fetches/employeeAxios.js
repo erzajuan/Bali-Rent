@@ -78,9 +78,6 @@ const getAllEmployee = async (response) => {
         let result = await axios({
             method:'GET',
             url:URL,
-            headers:{
-                access_token
-            }            
         })
         console.log(result.data.data)
         response(result.data.data)

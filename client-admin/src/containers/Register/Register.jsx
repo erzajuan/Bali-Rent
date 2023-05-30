@@ -87,7 +87,7 @@ const Register = () => {
                         <Button type="submit" variant="outlined" sx={{mb:1}}>Register</Button>
                     </form>
                     <small style={{display:'block'}}>Already have an account ? <Link to={'/login'}>Login Here</Link></small>
-                    {/* <small>Register an admin account ? <Link to={'/register-admin'}>Register Admin Here</Link></small> */}
+                    <small>Register an admin account ? <Link to={'/register-admin'}>Register Admin Here</Link></small>
                 </></>
                 </Paper>
             </Grid>

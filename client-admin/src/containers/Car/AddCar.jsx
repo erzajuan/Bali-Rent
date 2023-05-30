@@ -1,19 +1,13 @@
-import {Button, Grid, Paper, Stack, TextField, Typography} from "@mui/material"
+import {Button, MenuItem, Select, Stack, TextField, Typography} from "@mui/material"
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { detailCarRent, updateCarRent } from "../../fetches/carAxios"
+import { createCarRent } from "../../fetches/carAxios"
 import { detailCarBrand } from "../../fetches/brandAxios"
-
-const EditCar = (props) => {
-    const {idCar, handleShowEditCar} = props
-    const navigation = useNavigate()
-    console.log('idCar:',idCar)
-
-    const [brandNames, setBrandNames] = useState([])
+const AddCar = () => {
+    const [brandNames, setBrandNames] = useState('')
     const detailBrand = () => {
         try{
             detailCarBrand((response) => {
-                // console.log('response car brand:',response)
+                console.log('mulai ')
                 setBrandNames(response)
             })
         }
@@ -25,7 +19,7 @@ const EditCar = (props) => {
     useEffect(() => {
         detailBrand()
     },[])
-
+    
     const [form, setForm] = useState({
         name:'',
         rentPrice:'',
@@ -40,50 +34,11 @@ const EditCar = (props) => {
     })
     const [file, setFile] = useState(null)
 
-    const detailCars = () => {
-        try{
-            detailCarRent((response) => {
-                const carsById = response.find((data) => data.id === +idCar)
-                console.log('carsById:', carsById)
-                console.log('carsById brandId :', carsById.brandId)
-                console.log('brandNames detail :', brandNames)
-                // const brandNameDetail = brandNames.find((name) => name.id === +carsById.brandId)
-                // const brandName = brandNameDetail.brandName
-                setForm({
-                    name:carsById.name,
-                    rentPrice:carsById.rentPrice,
-                    plateNumber:carsById.plateNumber,
-                    fuelType:carsById.fuelType,
-                    seatCount:carsById.seatCount,
-                    carYear:carsById.carYear,
-                    brandName:carsById.brand.brandName,
-                    transmission:carsById.transmission,
-                    wdType:carsById.wdType,
-                    status:carsById.status
-                })
-                console.log(carsById)
-        })
-        
-        }
-        catch(err){
-            console.log(err)
-        }
-    }
-    
-    useEffect(() => {
-        detailCars();
-        // const interval = setInterval(detailCars, 1000)
-        // return () => {
-        //     clearInterval(interval)
-        // }
-    },[])
-
-
     const handleSubmit = (event) => {
         try{
-            event.preventDefault()
             const brandNameDetail = brandNames.find((name) => name.brandName === form.brandName)
             const brandId = brandNameDetail.id
+            event.preventDefault()
             const data = new FormData()
             data.append("name", form.name)
             data.append("rentPrice", form.rentPrice)
@@ -97,26 +52,23 @@ const EditCar = (props) => {
             data.append("status", form.status)
             data.append("carImage", file)
 
-            updateCarRent(idCar, data, (response) => {
-                if(response){
-                    handleShowEditCar(idCar, false)
-                    navigation('/showcar')               
-                }
-            })
+            createCarRent(data)
         }
         catch(err){
             console.log(err)
         }
     }
 
+
     return(
         <>
-        <Typography variant="h4">EditCar</Typography>
-        <form onSubmit={handleSubmit}> 
+        <Typography variant="h4">AddCar</Typography>
+        <form onSubmit={handleSubmit}>
             <Typography sx={{mt:2}}>Upload Image Car</Typography>
             <TextField
                 type="file"
                 name="upload image car"
+                required
                 fullWidth
                 sx={{mb:4}}
                 onChange={(e) => setFile(e.target.files[0])}
@@ -128,7 +80,7 @@ const EditCar = (props) => {
                 fullWidth
                 sx={{mb:4}}
                 onChange={(e) => setForm({...form, name:e.target.value})}
-                value={form.name}
+                // value={form.name}
             />
             <Stack direction={"row"} spacing={2} sx={{mb:4}}>
                 <TextField 
@@ -137,7 +89,7 @@ const EditCar = (props) => {
                     required
                     fullWidth
                     onChange={(e) => setForm({...form, seatCount:e.target.value})}
-                    value={form.seatCount}
+                    // value={form.seatCount}
                 />
                 <TextField 
                     label="Fuel Type"
@@ -145,7 +97,7 @@ const EditCar = (props) => {
                     required
                     fullWidth
                     onChange={(e) => setForm({...form, fuelType:e.target.value})}
-                    value={form.fuelType}
+                    // value={form.fuelType}
                 />
             </Stack>
             <Stack direction={"row"} spacing={2} sx={{mb:4}}>
@@ -155,7 +107,7 @@ const EditCar = (props) => {
                     required
                     fullWidth
                     onChange={(e) => setForm({...form, carYear:e.target.value})}
-                    value={form.carYear}
+                    // value={form.carYear}
                 />
                 <TextField 
                     label="Transmission"
@@ -163,7 +115,7 @@ const EditCar = (props) => {
                     required
                     fullWidth
                     onChange={(e) => setForm({...form, transmission:e.target.value})}
-                    value={form.transmission}
+                    // value={form.transmission}
                 />
             </Stack>
             <Stack direction={"row"} spacing={2} sx={{mb:4}}>
@@ -173,7 +125,7 @@ const EditCar = (props) => {
                     required
                     fullWidth
                     onChange={(e) => setForm({...form, brandName:e.target.value})}
-                    value={form.brandName}
+                    // value={form.brandId}
                 />
                 <TextField 
                     label="Wd Type"
@@ -181,7 +133,7 @@ const EditCar = (props) => {
                     required
                     fullWidth
                     onChange={(e) => setForm({...form, wdType:e.target.value})}
-                    value={form.wdType}
+                    // value={form.wdType}
                 />
             </Stack>
             <TextField 
@@ -191,7 +143,7 @@ const EditCar = (props) => {
                     fullWidth
                     sx={{mb: 4}}
                     onChange={(e) => setForm({...form, plateNumber:e.target.value})}
-                    value={form.plateNumber}
+                    // value={form.plateNumber}
             />
             <TextField 
                     label="Rent Price"
@@ -200,7 +152,7 @@ const EditCar = (props) => {
                     fullWidth
                     sx={{mb: 4}}
                     onChange={(e) => setForm({...form, rentPrice:e.target.value})}
-                    value={form.rentPrice}
+                    // value={form.rentPrice}
             />
             <TextField 
                     label="Status"
@@ -209,24 +161,12 @@ const EditCar = (props) => {
                     fullWidth
                     sx={{mb: 4}}
                     onChange={(e) => setForm({...form, status:e.target.value})}
-                    value={form.status}
+                    // value={form.status}
             />
             <Button type="submit" variant="outlined">Save</Button>
-            <Button type="button" variant="outlined" sx={{ml:'10px'}} color='warning' onClick={() => handleShowEditCar(idCar, false)}>Back</Button>
         </form>
         </>
     )
 }
 
-export default EditCar
-
-/** @type {import('@mui/material').SxProps} */
-const styles = {
-    paperLogin:{
-        padding: 10,
-        height: '70vh',
-        width:500,
-        margin:'0 auto',
-        backgroundColor: 'white'
-    }
-}
+export default AddCar

@@ -22,7 +22,11 @@ class EmployeeController {
 
   static async register(req, res) {
     try {
-      const { name, username, email, password, phoneNumber } = req.body;
+      const { name, username, email, password, phoneNumber, role } = req.body;
+
+      // console.log('req body employee:',req.body)
+      // console.log('role employee from body:',req.body.role)
+      // console.log('role employee from const:',role)
 
       let resultUsername = await employee.findOne({
         where: { username },
@@ -52,13 +56,26 @@ class EmployeeController {
         let isnum = /^\d+$/.test(phoneNumber);
 
         if (isnum) {
-          let result = await employee.create({
-            name,
-            username,
-            email,
-            password,
-            phoneNumber,
-          });
+          let result
+          if(role === undefined){
+            result = await employee.create({
+              name,
+              username,
+              email,
+              password,
+              phoneNumber,
+            });
+          }
+          else{
+            result = await employee.create({
+              name,
+              username,
+              email,
+              password,
+              phoneNumber,
+              role
+            });
+          }
           res.status(201).json({
             status: true,
             message: "Berhasil membuat akun",

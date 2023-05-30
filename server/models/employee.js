@@ -61,8 +61,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate: function (employee, options) {
-          employee.password = encrypt(employee.password);
-          employee.role = "renter"
+          if(employee.role !== undefined){
+            employee.password = encrypt(employee.password);
+          }
+          else{
+            employee.password = encrypt(employee.password);
+            employee.role = "renter"
+          }
         },
       },
       sequelize,

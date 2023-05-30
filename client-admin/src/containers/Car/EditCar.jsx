@@ -2,29 +2,11 @@ import {Button, Grid, Paper, Stack, TextField, Typography} from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { detailCarRent, updateCarRent } from "../../fetches/carAxios"
-import { detailCarBrand } from "../../fetches/brandAxios"
 
 const EditCar = (props) => {
     const {idCar, handleShowEditCar} = props
     const navigation = useNavigate()
     console.log('idCar:',idCar)
-
-    const [brandNames, setBrandNames] = useState([])
-    const detailBrand = () => {
-        try{
-            detailCarBrand((response) => {
-                // console.log('response car brand:',response)
-                setBrandNames(response)
-            })
-        }
-        catch(err){
-            console.log(err)
-        }
-    }
-
-    useEffect(() => {
-        detailBrand()
-    },[])
 
     const [form, setForm] = useState({
         name:'',
@@ -33,7 +15,7 @@ const EditCar = (props) => {
         fuelType:'',
         seatCount:'',
         carYear:'',
-        brandName:'',
+        brandId:'',
         transmission:'',
         wdType:'',
         status:''
@@ -44,11 +26,6 @@ const EditCar = (props) => {
         try{
             detailCarRent((response) => {
                 const carsById = response.find((data) => data.id === +idCar)
-                console.log('carsById:', carsById)
-                console.log('carsById brandId :', carsById.brandId)
-                console.log('brandNames detail :', brandNames)
-                // const brandNameDetail = brandNames.find((name) => name.id === +carsById.brandId)
-                // const brandName = brandNameDetail.brandName
                 setForm({
                     name:carsById.name,
                     rentPrice:carsById.rentPrice,
@@ -56,7 +33,7 @@ const EditCar = (props) => {
                     fuelType:carsById.fuelType,
                     seatCount:carsById.seatCount,
                     carYear:carsById.carYear,
-                    brandName:carsById.brand.brandName,
+                    brandId:carsById.brandId,
                     transmission:carsById.transmission,
                     wdType:carsById.wdType,
                     status:carsById.status
@@ -78,12 +55,9 @@ const EditCar = (props) => {
         // }
     },[])
 
-
     const handleSubmit = (event) => {
         try{
             event.preventDefault()
-            const brandNameDetail = brandNames.find((name) => name.brandName === form.brandName)
-            const brandId = brandNameDetail.id
             const data = new FormData()
             data.append("name", form.name)
             data.append("rentPrice", form.rentPrice)
@@ -91,7 +65,7 @@ const EditCar = (props) => {
             data.append("fuelType", form.fuelType)
             data.append("seatCount", form.seatCount)
             data.append("carYear", form.carYear)
-            data.append("brandId", brandId)
+            data.append("brandId", form.brandId)
             data.append("transmission", form.transmission)
             data.append("wdType", form.wdType)
             data.append("status", form.status)
@@ -172,8 +146,8 @@ const EditCar = (props) => {
                     type="text"
                     required
                     fullWidth
-                    onChange={(e) => setForm({...form, brandName:e.target.value})}
-                    value={form.brandName}
+                    onChange={(e) => setForm({...form, brandId:e.target.value})}
+                    value={form.brandId}
                 />
                 <TextField 
                     label="Wd Type"
@@ -212,7 +186,6 @@ const EditCar = (props) => {
                     value={form.status}
             />
             <Button type="submit" variant="outlined">Save</Button>
-            <Button type="button" variant="outlined" sx={{ml:'10px'}} color='warning' onClick={() => handleShowEditCar(idCar, false)}>Back</Button>
         </form>
         </>
     )

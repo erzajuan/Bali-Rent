@@ -1,9 +1,10 @@
-import {Box, Button, Grid, Paper, Stack, TextField, Typography} from "@mui/material"
+import {Button, Grid, Paper, Stack, TextField, Typography} from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { registerEmployee } from "../../fetches/employeeAxios"
+import Swal from "sweetalert2"
 
-const Register = () => {
+const RegisterAdmin = () => {
 
     const navigation = useNavigate()
 
@@ -12,6 +13,7 @@ const Register = () => {
     const [phoneNum, setPhoneNum] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [adminNum, setAdminNum] = useState('')
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -20,15 +22,25 @@ const Register = () => {
             username: `${firstName}${lastName}`,
             email: email,
             password: password,
-            phoneNumber: phoneNum
+            phoneNumber: phoneNum,
+            role: 'admin'
         }
 
-        registerEmployee(formRegister, (status) => {
-            console.log(status)
-            if(status){
-                navigation("/login")
-            }
+        if(adminNum === '54321'){
+            registerEmployee(formRegister, (status) => {
+                console.log(status)
+                if(status){
+                    navigation("/login")
+                }
         })
+        }
+        else{
+            Swal.fire({
+                icon:"error",
+                title:"Register Admin is Failed",
+                text:"Not Found Admin Number"
+            })
+        }
 
         console.log(firstName, lastName, phoneNum, email, password)
     }
@@ -36,7 +48,7 @@ const Register = () => {
     return(
             <Grid>
                 <Paper sx={styles.paperLogin}>
-                <><Typography variant="h4">Renter Register</Typography><>
+                <><Typography variant="h4">Admin Register</Typography><>
                     <form onSubmit={handleSubmit}> 
                         {/* default value must be same from user login profile and taken from profile database */}
                         <Stack spacing={2} direction={"row"} sx={{mb:4, mt:2}}>
@@ -84,23 +96,32 @@ const Register = () => {
                             onChange={e => setPassword(e.target.value)}
                             value={password}
                         />
+                        <TextField
+                            label='Admin Number'
+                            type="text"
+                            required
+                            fullWidth
+                            sx={{mb:4}}
+                            onChange={e => setAdminNum(e.target.value)}
+                            value={adminNum}
+                        />
                         <Button type="submit" variant="outlined" sx={{mb:1}}>Register</Button>
                     </form>
                     <small style={{display:'block'}}>Already have an account ? <Link to={'/login'}>Login Here</Link></small>
-                    {/* <small>Register an admin account ? <Link to={'/register-admin'}>Register Admin Here</Link></small> */}
+                    <small>Register an admin account ? <Link to={'/register'}>Register Renter Here</Link></small>
                 </></>
                 </Paper>
             </Grid>
     )
 }
 
-export default Register
+export default RegisterAdmin
 
 /** @type {import('@mui/material').SxProps} */
 const styles = {
     paperLogin:{
         padding: 10,
-        height: '70vh',
+        height: '77vh',
         width:500,
         margin:'0 auto',
         backgroundColor: 'white'
